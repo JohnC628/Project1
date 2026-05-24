@@ -12,14 +12,14 @@ readonly class UpdateTodoDTO
         public ?bool $is_completed,
     ) {}
 
-    public static function fromRequest(UpdateTodoDTO $request): self
+    public static function fromRequest(Request $request): self
     {
         // 這邊要用input而不是validated，因為更新的時候可能只更新其中幾個欄位，validated對應欄位不可以為null
         return new self(
             id: $request->input('id'),
             title: $request->input('title'),
-            description: $request->inpu('description'),
-            is_completed: $request->inpu('is_completed'),
+            description: $request->input('description'),
+            is_completed: $request->input('is_completed'),
         );
     }
 
@@ -32,6 +32,6 @@ readonly class UpdateTodoDTO
             'title'        => $this->title,
             'description'  => $this->description,
             'is_completed' => $this->is_completed,
-        ], fn($value) => !is_null(value)); 
+        ], fn($value) => !is_null($value)); 
     }
 }

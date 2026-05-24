@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\TodoService;
 use App\DTOs\ReqDTO\CreateTodoDTO;
+use App\DTOs\ReqDTO\UpdateTodoDTO;
+use App\DTOs\ReqDTO\DeleteTodoDTO;
 
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\CreateTodoRequest;
+use App\Http\Requests\DeleteTodoRequest;
 
 class TodoController extends Controller
 {
@@ -66,4 +69,42 @@ class TodoController extends Controller
             'message' => '新增待辦事項失敗',
         ], 400, [], JSON_UNESCAPED_UNICODE);
     }  
+
+    public function updateTodo(Request $request): JsonResponse
+    {
+        $reqDto = UpdateTodoDTO::fromRequest($request);
+
+        $isUpdate = $this->todoService->updateTodo($reqDto);
+
+        if($isUpdate){
+            return response()->json([
+                'success' => true,
+                'message' => '更新待辦事項成功',
+            ], 200, [], JSON_UNESCAPED_UNICODE);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => '更新待辦事項失敗，可能找不到該待辦事項',
+        ], 400, [], JSON_UNESCAPED_UNICODE);
+    } 
+
+    public function deleteTodo(DeleteTodoRequest $request): JsonResponse
+    {
+        $reqDto = DeleteTodoDTO::fromRequest($request);
+
+        $isDelete = $this->todoService->deleteTodo($reqDto);
+
+        if($isDelete){
+            return response()->json([
+                'success' => true,
+                'message' => '刪除待辦事項成功',
+            ], 200, [], JSON_UNESCAPED_UNICODE);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => '刪除待辦事項失敗，可能找不到該待辦事項',
+        ], 400, [], JSON_UNESCAPED_UNICODE);
+    } 
 }

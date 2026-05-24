@@ -19,3 +19,5 @@ Route::get('/getAllTodos', [TodoController::class, 'getAllTodos']);
 Route::post('/createTodo', [TodoController::class, 'createTodo']);
 // 更新Todo
 Route::post('/updateTodo', [TodoController::class, 'updateTodo']);
+// 刪除Todo
+Route::post('/deleteTodo', [TodoController::class, 'deleteTodo']);

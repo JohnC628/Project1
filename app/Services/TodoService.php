@@ -4,8 +4,10 @@ namespace App\Services;
 use App\Models\Todo;
 use App\DTOs\RespDTO\TodoListDTO;
 use App\DTOs\ReqDTO\CreateTodoDTO;
+use App\DTOs\ReqDTO\UpdateTodoDTO;
+use App\DTOs\ReqDTO\DeleteTodoDTO;
 
-use illuminate\Support\Collection;
+use Illuminate\Support\Collection;
 
 class TodoService{
     /**
@@ -30,8 +32,37 @@ class TodoService{
      */
     public function createTodo(CreateTodoDTO $data): bool
     {
+        //dd($data->toArray());
         return !!Todo::create($data->toArray());
     }
 
+    /**
+     * Summary of updateTodo
+     * @param updateTodoDTO $data
+     * @return bool|int
+     */
+    public function updateTodo(updateTodoDTO $data): bool
+    {
+        $todo = todo::where('id', $data->id)
+                ->first();
+        if(!$todo) return false;
+        return $todo->update($data->toUpdateArray());
+    }
+
+    /**
+     * Summary of updateTodo
+     * @param DeleteodoDTO $data
+     * @return bool
+     */
+    public function deleteTodo(DeleteTodoDTO $data): bool
+    {
+        $todo = todo::where('id', $data->id)
+                ->first();
+
+        if(!$todo) return false;
+
+        $todo->delete();
+        return true;
+    }
 }
 
